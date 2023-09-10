@@ -1,0 +1,51 @@
+ var adCategoryIds = adsData.mainCategoryId.length > 0 ? adsData.mainCategoryId : adsData.brandCategoryIDs;
+
+    var isLogin = '0';
+
+    googletag.pubads().setTargeting('isLogin', [isLogin]);
+
+    googletag.pubads().setTargeting('BrandID', adsData.brandIds);
+
+    googletag.pubads().setTargeting('ComplaintID', adsData.complaintIds);
+
+    googletag.pubads().setTargeting('Pagetype', adsData.pageType);
+
+    googletag.pubads().setTargeting('Hashtag', adsData.hashtagName);
+
+    googletag.pubads().setTargeting('Gender', adsData.gender);
+
+    googletag.pubads().setTargeting('MaritalStatus', adsData.maritalStatus);
+
+    googletag.pubads().setTargeting('CityofResidince', adsData.cityOfResidence);
+
+    googletag.pubads().setTargeting('Age', adsData.age);
+
+    googletag.pubads().setTargeting('browserLanguage', window.navigator.language || window.navigator.userLanguage);
+
+    googletag.pubads().setTargeting('PremiumAdType', adsData.premiumAdType);
+
+    if (adCategoryIds.length > 0) {
+      googletag.pubads().setTargeting('CategoryID', adCategoryIds);
+    }  googletag.pubads().setTargeting('Environment', ['LivePage']);  var visitCompaniesData = adsTargeting('visitCompanies', adsData.brandIds);
+    if (visitCompaniesData.length > 0) {
+      googletag.pubads().setTargeting('Targeting', visitCompaniesData);
+    }
+
+    var visitedCategoryIds = adsTargeting('visitedCategoryIds', adCategoryIds);
+    if (visitedCategoryIds.length > 0) {
+      googletag.pubads().setTargeting('visitedCategoryID', visitedCategoryIds);
+    }
+
+    interstitialSlot = googletag.defineOutOfPageSlot('/50947975/deneme.com/Details-Interstitial', googletag.enums.OutOfPageFormat.INTERSTITIAL);
+
+    if (interstitialSlot) {
+      interstitialSlot.addService(googletag.pubads());
+    }
+
+    if (false && isLogin === '0') {
+      anchorSlot = googletag.defineOutOfPageSlot('/50947975/deneme.com/Details-OOP2', googletag.enums.OutOfPageFormat.BOTTOM_ANCHOR);
+
+      if (anchorSlot) {
+        anchorSlot.addService(googletag.pubads());
+      }
+    }
