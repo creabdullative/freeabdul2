@@ -1,0 +1,101 @@
+<html xmlns="//www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta http-equiv="pragma" content="no-cache" />
+<meta http-equiv="cache-control" content="no-cache" />
+<meta name="description" content="Point Blank TAM Online Bilgisayar Oyunu - Ücretsiz; Türkçe, İngilizce ve Arapça içeriğe sahip olan ve bu dillerde destek sağlayan ülkenin en kaliteli MMOFPS oyunudur. En gerçekçi vuruş hissini, onlarca silah ve harita seçeneklerinde, çekişmeli eSpor turnuvalarıyla milyonlarca oyuncu ile yaşamak istiyorsanız, doğru tercih Point Blank TAM!" />
+<meta name="keywords" content="Point Blank, TAM, Türkiye, Online, FPS, oyun, bedava, ücretsiz, indir, kayıt, oyna, espor, turnuva, türkçe, ingilizce, arapça, azeri, azerbaycan, savaş, silah, bıçak, bomba, hemen, f2p, tg, yükle, premium, kafe" />
+<meta property="og:title" content="Point Blank" />
+<meta property="og:description" content="Point Blank" />
+<title>Point Blank</title>
+<link href="//fonts.googleapis.com/css?family=Anton|Open+Sans:400,700,400italic,700italic" rel="stylesheet" type="text/css">
+<link media="all" href="https://pb.tamgame.com/css/3/tr/default.css" type="text/css" rel="stylesheet" />
+<link media="all" href="https://pb.tamgame.com/css/3/tr/layout.css" type="text/css" rel="stylesheet" />
+<link media="all" href="https://pb.tamgame.com/css/3/tr/main.css" type="text/css" rel="stylesheet" />
+<link media="all" href="https://pb.tamgame.com/css/3/tr/sub.css" type="text/css" rel="stylesheet" />
+<script src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
+<script src="https://code.jquery.com/ui/1.11.3/jquery-ui.min.js"></script>
+<script type="text/javascript">
+var isLogin = false;
+var url_loginform = "https://www.tamgame.com/account/loginform.do";
+var zpCommon = {
+    login : function (strUseridID, strPasswordID, strRef, strRememberId, strLoginType, recaptcha_response, strMessage) {
+		var userid = $("#" + strUseridID);
+		var password = $("#" + strPasswordID);
+		var ref = null;
+		var rememberId = null;
+		var msg = null;
+		var span = $("#devTempLoginFormSpan");
+
+		if (strMessage && strMessage != null && strMessage != undefined) {
+			msg = $("#" + strMessage);
+			if (msg.length <= 0) msg = null;
+		}
+
+		if (msg == null) {
+			if (isBlank(userid, "Lütfen E-Posta giriniz.", "Y")) {return;}
+			if (isBlank(password, "Lütfen şifrenizi giriniz.", "Y")) {return;}
+		} else {
+			if (userid.val().trim().length <= 0) {
+				msg.html("Lütfen E-Posta giriniz.");
+				userid.focus();
+				return;
+			}
+			if (password.val().trim().length <= 0) {
+				msg.html("Lütfen şifrenizi giriniz.");
+				password.focus();
+				return;
+			}
+		}
+
+		if (strRef && strRef != null && strRef != undefined) {
+			ref = $("#" + strRef);
+			if (ref.length <= 0) ref = null;
+		}
+		
+		if (span.length <= 0) {
+			$("body").append("<span id='devTempLoginFormSpan' style='width:0px; height:0px; display:none;'></span>");
+			span = $("#devTempLoginFormSpan");
+		}
+		span.html("");
+		
+		var html = "<form id='devTempLoginForm'>";
+		html += "<input type='text' id='devTempLoginFormUserid' name='userid' value='"+userid.val()+"' />";
+		html += "<input type='password' id='devTempLoginFormPassword' name='userpassword' value='"+password.val()+"' />";
+		if (ref && ref != null && ref != undefined) {
+			html += "<input type='hidden' id='devTempLoginFormRef' name='ref' value='"+ref.val()+"' />";
+		}
+		if (strRememberId && strRememberId != null && strRememberId != undefined) {
+			var chkRememberId = "0";
+
+			if ($("input:checkbox[id='"+strRememberId+"']").is(":checked")) chkRememberId = "1"; 
+			html += "<input type='hidden' id='chkRememberId' name='chkRememberId' value='"+chkRememberId+"' />";
+		}
+		if (strLoginType && strLoginType != null && strLoginType != undefined) {
+		    html += "<input type='hidden' id='loginType' name='loginType' value='"+$( "input[name='loginType']" ).val()+"' />";
+		}
+		if (recaptcha_response && recaptcha_response != null && recaptcha_response != undefined) {
+		    html += "<input type='hidden' id='g-recaptcha-response' name='g-recaptcha-response' value='"+$( "#g-recaptcha-response" ).val()+"' />";
+		}
+		
+		html += "</form>";
+		span.append(html);
+
+		frm = $("#devTempLoginForm");
+		frm.attr("method", "POST");
+		frm.attr("action", "/account/login.do");
+		frm.submit();
+	},
+	cbEnter : function (id, evtType) {
+		switch (evtType) {
+			case "login":
+				zpCommon.login("login_userid", "login_userpassword");
+				break;
+			case "login_form":
+			    //zpCommon.login("login_userid_form", "login_userpassword_form", "login_referer_form", "login_form_msg");
+			    zpCommon.login("login_userid_form", "login_userpassword_form", "login_referer_form", "login_chkRememberId_form", "loginType", "g-recaptcha-response", "login_form_msg");
+				break;
+		}
+	}
+};
